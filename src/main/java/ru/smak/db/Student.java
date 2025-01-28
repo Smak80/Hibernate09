@@ -3,6 +3,7 @@ package ru.smak.db;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -11,10 +12,20 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String firstname;
+
+    @Column(nullable = false)
     private String lastname;
+
+    @Column(name = "gr")
     private String group;
+
+    @Column(nullable = false)
     private Date birthday;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Exam> exams;
 
     public int getId() {
         return id;
@@ -57,6 +68,14 @@ public class Student {
     }
 
     public Student(){}
+
+    public List<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<Exam> exams) {
+        this.exams = exams;
+    }
 
     public Student(
         String firstname,
